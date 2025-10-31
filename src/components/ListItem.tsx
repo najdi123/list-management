@@ -1,13 +1,13 @@
 import type { ListItemType } from "../types";
-import { Trash2 } from "lucide-react";
+import { Trash2, Pencil } from "lucide-react";
 
 interface Props {
   item: ListItemType;
-
+  onEdit: (item: ListItemType) => void;
   onDelete: (id: string) => void;
 }
 
-export const ListItem = ({ item, onDelete }: Props) => {
+export const ListItem = ({ item, onEdit, onDelete }: Props) => {
   const formattedDate = new Intl.DateTimeFormat("en-US", {
     month: "short",
     day: "numeric",
@@ -28,6 +28,13 @@ export const ListItem = ({ item, onDelete }: Props) => {
         </div>
 
         <div className="flex gap-2 ml-4">
+          <button
+            onClick={() => onEdit(item)}
+            className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            aria-label="Edit item"
+          >
+            <Pencil size={18} />
+          </button>
           <button
             onClick={() => onDelete(item.id)}
             className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"

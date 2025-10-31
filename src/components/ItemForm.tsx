@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useEffect } from "react";
 import type { ItemFormData } from "../types";
 
 // Zod schema with custom validation
@@ -24,20 +25,35 @@ const itemSchema = z
 interface Props {
   onSubmit: (data: ItemFormData) => void;
   onCancel: () => void;
+  initialData?: ItemFormData;
+  mode?: "create" | "edit";
 }
 
-export const ItemForm = ({ onSubmit, onCancel }: Props) => {
+export const ItemForm = ({
+  onSubmit,
+  onCancel,
+  initialData,
+  mode = "create",
+}: Props) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<ItemFormData>({
     resolver: zodResolver(itemSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       title: "",
       subtitle: "",
     },
   });
+
+  // Reset form when initialData changes (for edit mode)
+  useEffect(() => {
+    if (initialData) {
+      reset(initialData);
+    }
+  }, [initialData, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -101,7 +117,7 @@ export const ItemForm = ({ onSubmit, onCancel }: Props) => {
           type="submit"
           className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Create
+          {mode === "create" ? "Create" : "Update"}
         </button>
       </div>
     </form>
