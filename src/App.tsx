@@ -1,38 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import { ListItem as ListItemComponent } from "./components/ListItem";
+import type { ListItemType } from "./types";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [items, setItems] = useState<ListItemType[]>([
+    {
+      id: "1",
+      title: "My First Task",
+      subtitle: "asdasdasd",
+      dateCreated: new Date(),
+    },
+    {
+      id: "2",
+      title: "Second Task",
+      subtitle: "qweqweqwe",
+      dateCreated: new Date(),
+    },
+  ]);
+
+  const handleDelete = (id: string) => {
+    setItems(items.filter((item) => item.id !== id));
+  };
 
   return (
-    <>
-      <div>
-          <h1 className="text-3xl text-amber-300 font-bold underline">
-    Hello world!
-  </h1>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="min-h-screen min-w-screen bg-gray-50 p-8">
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold mb-8">List Manager</h1>
+        <div className="space-y-4">
+          {items.map((item) => (
+            <ListItemComponent
+              key={item.id}
+              item={item}
+              onDelete={handleDelete}
+            />
+          ))}
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
