@@ -4,3 +4,8 @@ export interface ListItemType {
   subtitle: string;
   dateCreated: Date;
 }
+
+export interface ItemFormData {
+  title: string;
+  subtitle: string;
+}
